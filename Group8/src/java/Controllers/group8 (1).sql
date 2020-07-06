@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 25, 2020 lúc 07:24 AM
+-- Thời gian đã tạo: Th7 05, 2020 lúc 03:59 AM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.3
 
@@ -347,7 +347,14 @@ ALTER TABLE `payment`
 -- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`pId`);
+  ADD PRIMARY KEY (`pId`),
+  ADD KEY `product_fk_tr` (`trId`),
+  ADD KEY `product_fk_iId` (`iId`),
+  ADD KEY `product_fk_clId` (`clId`),
+  ADD KEY `product_fk_mId` (`mId`),
+  ADD KEY `product_fk_dId` (`dId`),
+  ADD KEY `product_fk_tpId` (`tpId`),
+  ADD KEY `product_fk_stId` (`stId`);
 
 --
 -- Chỉ mục cho bảng `role`
@@ -400,6 +407,22 @@ ALTER TABLE `voucher`
 --
 ALTER TABLE `user`
   MODIFY `uId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_fk_clId` FOREIGN KEY (`clId`) REFERENCES `color` (`clId`),
+  ADD CONSTRAINT `product_fk_dId` FOREIGN KEY (`dId`) REFERENCES `desciption` (`dId`),
+  ADD CONSTRAINT `product_fk_iId` FOREIGN KEY (`iId`) REFERENCES `image` (`iId`),
+  ADD CONSTRAINT `product_fk_mId` FOREIGN KEY (`mId`) REFERENCES `manufacture` (`mId`),
+  ADD CONSTRAINT `product_fk_stId` FOREIGN KEY (`stId`) REFERENCES `statusproduct` (`stId`),
+  ADD CONSTRAINT `product_fk_tpId` FOREIGN KEY (`tpId`) REFERENCES `typeproduct` (`tpId`),
+  ADD CONSTRAINT `product_fk_tr` FOREIGN KEY (`trId`) REFERENCES `trendmask` (`trId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
