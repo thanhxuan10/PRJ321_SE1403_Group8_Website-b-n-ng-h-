@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 05, 2020 lúc 03:59 AM
+-- Thời gian đã tạo: Th7 07, 2020 lúc 07:53 AM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.4.3
 
@@ -30,15 +30,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `aId` int(11) NOT NULL,
-  `rId` int(11) DEFAULT NULL,
   `aName` varchar(255) DEFAULT NULL,
   `aPass` varchar(255) DEFAULT NULL,
   `aEmail` varchar(255) DEFAULT NULL,
   `aPhone` varchar(255) DEFAULT NULL,
   `aAddress` varchar(255) DEFAULT NULL,
   `aBrithday` date DEFAULT NULL,
-  `aStatus` int(11) DEFAULT NULL
+  `aStatus` int(11) DEFAULT NULL,
+  `aGender` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `admin`
+--
+
+INSERT INTO `admin` (`aId`, `aName`, `aPass`, `aEmail`, `aPhone`, `aAddress`, `aBrithday`, `aStatus`, `aGender`) VALUES
+(1, 'mai', '1234', 'mai@123', '0852251098', 'Can Tho', '2020-07-12', 1, 'nu');
 
 -- --------------------------------------------------------
 
@@ -48,22 +55,14 @@ CREATE TABLE `admin` (
 
 CREATE TABLE `bill` (
   `bId` int(11) NOT NULL,
-  `bdId` int(11) DEFAULT NULL,
   `uId` int(11) DEFAULT NULL,
-  `sId` int(11) DEFAULT NULL,
-  `bTimeorder` date DEFAULT NULL,
-  `aId` int(11) DEFAULT NULL,
-  `pID` int(11) DEFAULT NULL,
-  `vId` int(11) DEFAULT NULL,
-  `bBilltax` varchar(255) DEFAULT NULL,
-  `bStatus` int(11) DEFAULT NULL,
+  `bStatus` varchar(255) DEFAULT NULL,
   `bNote` varchar(255) DEFAULT NULL,
   `bAddress` varchar(255) DEFAULT NULL,
-  `bVoucher` varchar(255) DEFAULT NULL,
   `bName` varchar(255) DEFAULT NULL,
   `bPhone` varchar(255) DEFAULT NULL,
-  `bDeliverytime` date DEFAULT NULL,
-  `bTotal` varchar(255) DEFAULT NULL
+  `bTotal` double NOT NULL,
+  `bDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -74,9 +73,10 @@ CREATE TABLE `bill` (
 
 CREATE TABLE `billdetail` (
   `bdId` int(11) NOT NULL,
-  `pId` varchar(255) DEFAULT NULL,
-  `bdAmount` varchar(255) DEFAULT NULL,
-  `bdPrice` double DEFAULT NULL
+  `pId` int(11) NOT NULL,
+  `bdAmount` int(11) NOT NULL,
+  `bdPrice` double DEFAULT NULL,
+  `bId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -139,7 +139,8 @@ CREATE TABLE `history` (
 CREATE TABLE `image` (
   `iId` int(11) NOT NULL,
   `iName` varchar(255) DEFAULT NULL,
-  `iAmount` varchar(255) DEFAULT NULL
+  `iAmount` varchar(255) DEFAULT NULL,
+  `pId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -172,21 +173,24 @@ CREATE TABLE `payment` (
 
 CREATE TABLE `product` (
   `pId` int(11) NOT NULL,
-  `trId` int(11) DEFAULT NULL,
-  `iId` int(11) DEFAULT NULL,
-  `clId` int(11) DEFAULT NULL,
-  `mId` int(11) DEFAULT NULL,
-  `dId` int(11) DEFAULT NULL,
-  `tpId` int(11) DEFAULT NULL,
-  `stId` int(11) DEFAULT NULL,
-  `pName` varchar(255) DEFAULT NULL,
-  `pBprices` double DEFAULT NULL,
-  `pAmount` varchar(255) DEFAULT NULL,
+  `pName` varchar(255) NOT NULL,
+  `pBprices` double NOT NULL,
+  `pAmount` int(255) DEFAULT NULL,
   `pIprices` double DEFAULT NULL,
-  `pGender` int(11) DEFAULT NULL,
-  `pQuarantee` varchar(255) DEFAULT NULL,
-  `pDiscount` varchar(255) DEFAULT NULL
+  `pGender` varchar(255) DEFAULT NULL,
+  `pGuarantee` varchar(255) DEFAULT NULL,
+  `pDiscount` varchar(255) DEFAULT NULL,
+  `pDescription` varchar(200) DEFAULT NULL,
+  `pDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `product`
+--
+
+INSERT INTO `product` (`pId`, `pName`, `pBprices`, `pAmount`, `pIprices`, `pGender`, `pGuarantee`, `pDiscount`, `pDescription`, `pDate`) VALUES
+(1, 'cbd111', 1000, 12, 10, 'nam', '1', '10%', 'rat de', '2020-01-01'),
+(3, 'xuan', 1000, 34, 10, 'nu', '1 nam', '10%', 'rat dep', '2020-07-17');
 
 -- --------------------------------------------------------
 
@@ -263,9 +267,17 @@ CREATE TABLE `user` (
   `uEmail` varchar(255) DEFAULT NULL,
   `uPhone` varchar(255) DEFAULT NULL,
   `uAddress` varchar(255) DEFAULT NULL,
-  `uBrithday` date DEFAULT NULL,
-  `uStatus` int(11) DEFAULT NULL
+  `uBirthday` date DEFAULT NULL,
+  `uStatus` int(11) DEFAULT NULL,
+  `uGender` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `user`
+--
+
+INSERT INTO `user` (`uId`, `uName`, `uPass`, `uEmail`, `uPhone`, `uAddress`, `uBirthday`, `uStatus`, `uGender`) VALUES
+(1, 'xuan', '123', 'xuan@123', '0909808080', 'Can Tho', '2020-07-01', 1, '0');
 
 -- --------------------------------------------------------
 
@@ -347,14 +359,7 @@ ALTER TABLE `payment`
 -- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`pId`),
-  ADD KEY `product_fk_tr` (`trId`),
-  ADD KEY `product_fk_iId` (`iId`),
-  ADD KEY `product_fk_clId` (`clId`),
-  ADD KEY `product_fk_mId` (`mId`),
-  ADD KEY `product_fk_dId` (`dId`),
-  ADD KEY `product_fk_tpId` (`tpId`),
-  ADD KEY `product_fk_stId` (`stId`);
+  ADD PRIMARY KEY (`pId`);
 
 --
 -- Chỉ mục cho bảng `role`
@@ -403,26 +408,22 @@ ALTER TABLE `voucher`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `aId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `product`
+--
+ALTER TABLE `product`
+  MODIFY `pId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `uId` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Các ràng buộc cho các bảng đã đổ
---
-
---
--- Các ràng buộc cho bảng `product`
---
-ALTER TABLE `product`
-  ADD CONSTRAINT `product_fk_clId` FOREIGN KEY (`clId`) REFERENCES `color` (`clId`),
-  ADD CONSTRAINT `product_fk_dId` FOREIGN KEY (`dId`) REFERENCES `desciption` (`dId`),
-  ADD CONSTRAINT `product_fk_iId` FOREIGN KEY (`iId`) REFERENCES `image` (`iId`),
-  ADD CONSTRAINT `product_fk_mId` FOREIGN KEY (`mId`) REFERENCES `manufacture` (`mId`),
-  ADD CONSTRAINT `product_fk_stId` FOREIGN KEY (`stId`) REFERENCES `statusproduct` (`stId`),
-  ADD CONSTRAINT `product_fk_tpId` FOREIGN KEY (`tpId`) REFERENCES `typeproduct` (`tpId`),
-  ADD CONSTRAINT `product_fk_tr` FOREIGN KEY (`trId`) REFERENCES `trendmask` (`trId`);
+  MODIFY `uId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
