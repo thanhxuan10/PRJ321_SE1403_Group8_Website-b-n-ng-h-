@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-@WebServlet(name = "RegisterConroller", urlPatterns = {"/RegisterConroller"})
-public class RegisterConroller extends HttpServlet {
+@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
+public class UserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +43,10 @@ public class RegisterConroller extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterConroller</title>");            
+            out.println("<title>Servlet UserController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterConroller at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,24 +78,27 @@ public class RegisterConroller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User u = new User();
-        u.setuName(request.getParameter("txtName"));
-        u.setuAddress(request.getParameter("txtAddress"));
-        u.setuEmail(request.getParameter("txtEmail"));
-        u.setuPhone(request.getParameter("txtPhone"));
-        u.setuPass(request.getParameter("txtPass"));
-        u.setuGender(request.getParameter("txtGender"));
-        
-        Date pDate = Date.valueOf(request.getParameter("txtBirthday"));
-        u.setuBirthday(pDate);
-        
         try {
+            User u = new User();
+            u.setuName(request.getParameter("uName"));
+            u.setuAddress(request.getParameter("uAddress"));
+            u.setuEmail(request.getParameter("uEmail"));
+            u.setuPass(request.getParameter("uPass"));
+            u.setuGender(request.getParameter("uGender"));
+            u.setuPhone(request.getParameter("uPhone"));
+            Date uBirthday = Date.valueOf(request.getParameter("uBirthday"));
+            u.setuBirthday(uBirthday);
             UserDAO uDAO = new UserDAO();
-            uDAO.insertUsers(u);
+            if (request.getParameter("updateUser") != null) {
+                int uId = Integer.parseInt(request.getParameter("uId"));
+                u.setuId(uId);
+                uDAO.updateUsers(u);
+            } 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(AdminControllers.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("login.jsp");
+
+        response.sendRedirect("./Admin/user.jsp");
     }
 
     /**

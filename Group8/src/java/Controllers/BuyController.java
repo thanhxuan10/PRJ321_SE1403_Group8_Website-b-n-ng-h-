@@ -5,26 +5,32 @@
  */
 package Controllers;
 
+import Models.DAO.BillDAO;
+import Models.DAO.CtBillDAO;
 import Models.DAO.ProductsDAO;
+import Models.Entity.BillDetail;
+import Models.Entity.Bills;
 import Models.Entity.Products;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "Admin", urlPatterns = {"/Admin"})
-public class Admin extends HttpServlet {
+@WebServlet(name = "BuyController", urlPatterns = {"/BuyController"})
+public class BuyController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +49,10 @@ public class Admin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Admin</title>");
+            out.println("<title>Servlet BuyController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Admin at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet BuyController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,31 +84,66 @@ public class Admin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Products p = new Products();
-        p.setpName(request.getParameter("pName"));
-        p.setpBprices(Double.parseDouble(request.getParameter("pBprices")));
-        p.setpAmount(Integer.parseInt(request.getParameter("pAmount")));
-        p.setpIprices(Double.parseDouble(request.getParameter("pIprices")));
-        p.setpGender(request.getParameter("pGender"));
-        p.setpGuarantee(request.getParameter("pGuarantee"));
-        p.setpDiscount(request.getParameter("pDiscount"));
-        p.setpDescription(request.getParameter("pDescription"));
-        Date pDate = Date.valueOf(request.getParameter("pDate"));
-        p.setpDate(pDate);
+        PrintWriter out = response.getWriter();
         try {
-            ProductsDAO pDAO = new ProductsDAO();
-            if (request.getParameter("btnUpdate") != null) {
-                int pId = Integer.parseInt(request.getParameter("pId"));
-                p.setpId(pId);
-                pDAO.updateProducts(p);
-            } else {
-                pDAO.insertProducts(p);
+            HttpSession session = request.getSession();//tạo session khi mua hang
+            BillDAO bDAO = new BillDAO();// tạo biến để gọi class BillsDAO
+            CtBillDAO ctDAO = new CtBillDAO();// tạo biến để gọi class ctBillDAO
+            Bills bd = new Bills();
+            String uId = "";
+            Cookie[] cookie = request.getCookies();
+            for (Cookie c : cookie) {
+                String cName = c.getName();
+                if (cName.equals("uId")) {
+                    uId = c.getValue();
+                }
             }
+            //out.print(uId);
+            Enumeration<String> pIds = session.getAttributeNames();// tạo session get attrinute name
+            int success = 1;
+            bd.setbAddress(request.getParameter("bAddress"));
+
+            bd.setbName(request.getParameter("bName"));
+            bd.setbPhone(request.getParameter("bPhone"));
+            bd.setbNote(request.getParameter("bNote"));
+
+            int bId = bDAO.createBill(Integer.parseInt(uId), bd.getbNote(), bd.getbAddress(), bd.getbName(), bd.getbPhone());
+            ProductsDAO pDAO = new ProductsDAO();
+            /*
+            pIds: [
+            {'1': 3}, {'2': 4}, {'3': 2}
+            ]
+            */
+            while (pIds.hasMoreElements()) {// tạo vòng lặp chạy từng phần từ 
+                String pId = pIds.nextElement();
+                int quantity = (int) session.getAttribute(pId);
+                
+                Products p = pDAO.getProducts(Integer.parseInt(pId));//lấy tất cả sản phẩm theo pId
+
+                if (p.getpAmount() >= quantity) {// neu so luong trong san pham lon hon so luong mua
+//                    bId = bDAO.createBill(Integer.parseInt(uId), bd.getbNote(), bd.getbAddress(), bd.getbName(), bd.getbPhone());// add vo bill
+                    if (!ctDAO.createBillDetail(bId, Integer.parseInt(pId), quantity)) {
+                        success = 0;
+                    }
+                }
+
+            }
+
+            if (bDAO.updateBillTotalPrice(bId) == 0) {
+                success = 0;
+            }
+
+            response.sendRedirect("products.jsp");
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        
-        response.sendRedirect("products.jsp");
+//            int uId = 0;
+//            if (request.getParameter("btnBuy") != null) {
+//                Cookie cookie = request.getCookies()[3];
+//                uId = Integer.parseInt(cookie.getValue());
+//                out.print(uId);
+//            }
+
     }
 
     /**

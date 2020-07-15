@@ -53,7 +53,7 @@ public class UserDAO {
                         rs.getString("uPass"),
                         rs.getString("uEmail"),
                         rs.getString("uPhone"),
-                        rs.getString("pAddress"),
+                        rs.getString("uAddress"),
                         rs.getDate("uBirthday"),
                         rs.getInt("uStatus"),
                         rs.getString("uGender")
@@ -87,7 +87,7 @@ public class UserDAO {
 
     public int updateUsers(User u) {
         try {
-            String sql = "insert into user(uName, uPass, uEmail, uPhone, uAddress, uBirthday, uStatus, uGender) values(?,?,?,?,?,?,?)";
+            String sql = "update user set uName=?, uPass=?, uEmail=?, uPhone=?, uAddress=?, uBirthday=?, uGender=? where uId=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, u.getuName());
             pst.setString(2, u.getuPass());
@@ -95,9 +95,9 @@ public class UserDAO {
             pst.setString(4, u.getuPhone());
             pst.setString(5, u.getuAddress());
             pst.setDate(6, (Date) u.getuBirthday());
-            pst.setInt(7, u.getuStatus());
-            pst.setString(8, u.getuGender());
-            pst.setInt(9, u.getuId());
+            pst.setString(7, u.getuGender());
+            pst.setInt(8, u.getuId());
+            
             return pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -117,24 +117,24 @@ public class UserDAO {
         return 0;
     }
 
-    public boolean login(String uName, String uPass) {
-        String sql = "select * from user where uName=? and uPass=?";
+    public int login(String uEmail, String uPass) {
+        String sql = "select uId from user where uEmail=? and uPass=?";
         PreparedStatement pst;
         try {
             pst = conn.prepareStatement(sql);
 
-            pst.setString(1, uName);
+            pst.setString(1, uEmail);
             pst.setString(2, uPass);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
-                return true;
+                return rs.getInt("uId");
             }
             
             
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return -1;
 
     }
 }

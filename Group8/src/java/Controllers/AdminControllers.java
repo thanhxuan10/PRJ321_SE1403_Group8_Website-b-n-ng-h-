@@ -5,8 +5,8 @@
  */
 package Controllers;
 
-import Models.DAO.UserDAO;
-import Models.Entity.User;
+import Models.DAO.ProductsDAO;
+import Models.Entity.Products;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-@WebServlet(name = "RegisterConroller", urlPatterns = {"/RegisterConroller"})
-public class RegisterConroller extends HttpServlet {
+@WebServlet(name = "Admin", urlPatterns = {"/Admin"})
+public class AdminControllers extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +43,10 @@ public class RegisterConroller extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterConroller</title>");            
+            out.println("<title>Servlet Admin</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterConroller at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Admin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,24 +78,31 @@ public class RegisterConroller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User u = new User();
-        u.setuName(request.getParameter("txtName"));
-        u.setuAddress(request.getParameter("txtAddress"));
-        u.setuEmail(request.getParameter("txtEmail"));
-        u.setuPhone(request.getParameter("txtPhone"));
-        u.setuPass(request.getParameter("txtPass"));
-        u.setuGender(request.getParameter("txtGender"));
-        
-        Date pDate = Date.valueOf(request.getParameter("txtBirthday"));
-        u.setuBirthday(pDate);
-        
+        Products p = new Products();
+        p.setpName(request.getParameter("pName"));
+        p.setpBprices(Double.parseDouble(request.getParameter("pBprices")));
+        p.setpAmount(Integer.parseInt(request.getParameter("pAmount")));
+        p.setpIprices(Double.parseDouble(request.getParameter("pIprices")));
+        p.setpGender(request.getParameter("pGender"));
+        p.setpGuarantee(request.getParameter("pGuarantee"));
+        p.setpDiscount(request.getParameter("pDiscount"));
+        p.setpDescription(request.getParameter("pDescription"));
+        Date pDate = Date.valueOf(request.getParameter("pDate"));
+        p.setpDate(pDate);
         try {
-            UserDAO uDAO = new UserDAO();
-            uDAO.insertUsers(u);
+            ProductsDAO pDAO = new ProductsDAO();
+            if (request.getParameter("btnUpdate") != null) {
+                int pId = Integer.parseInt(request.getParameter("pId"));
+                p.setpId(pId);
+                pDAO.updateProducts(p);
+            } else {
+                pDAO.insertProducts(p);
+            }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(AdminControllers.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("login.jsp");
+        
+        response.sendRedirect("products.jsp");
     }
 
     /**

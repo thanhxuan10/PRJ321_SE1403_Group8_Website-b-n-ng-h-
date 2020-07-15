@@ -28,7 +28,7 @@ public class ProductsDAO {
     }
 
     public ResultSet getAllProducts() {
-        String sql = "select * from product";
+        String sql = "select * from product where pAmount>0";
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -118,4 +118,5 @@ public class ProductsDAO {
         }
         return 0;
     }
+    
 }

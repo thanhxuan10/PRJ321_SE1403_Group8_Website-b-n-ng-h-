@@ -5,14 +5,9 @@
  */
 package Controllers;
 
-import Models.DAO.UserDAO;
-import Models.Entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-@WebServlet(name = "RegisterConroller", urlPatterns = {"/RegisterConroller"})
-public class RegisterConroller extends HttpServlet {
+@WebServlet(name = "HomeControler", urlPatterns = {"/"})
+public class HomeControler extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +32,8 @@ public class RegisterConroller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterConroller</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterConroller at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");// set cho project chay thang vao dssp.jsp
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,24 +62,7 @@ public class RegisterConroller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User u = new User();
-        u.setuName(request.getParameter("txtName"));
-        u.setuAddress(request.getParameter("txtAddress"));
-        u.setuEmail(request.getParameter("txtEmail"));
-        u.setuPhone(request.getParameter("txtPhone"));
-        u.setuPass(request.getParameter("txtPass"));
-        u.setuGender(request.getParameter("txtGender"));
-        
-        Date pDate = Date.valueOf(request.getParameter("txtBirthday"));
-        u.setuBirthday(pDate);
-        
-        try {
-            UserDAO uDAO = new UserDAO();
-            uDAO.insertUsers(u);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        response.sendRedirect("login.jsp");
+        processRequest(request, response);
     }
 
     /**

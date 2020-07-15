@@ -5,26 +5,21 @@
  */
 package Controllers;
 
-import Models.DAO.UserDAO;
-import Models.Entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "RegisterConroller", urlPatterns = {"/RegisterConroller"})
-public class RegisterConroller extends HttpServlet {
+@WebServlet(name = "CartController", urlPatterns = {"/CartController"})
+public class CartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,18 +32,23 @@ public class RegisterConroller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterConroller</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterConroller at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String id = request.getParameter("id");
+            // kiểm tra id đó có tồn tại hay không
+            if (id != null) {
+                // tạo session
+                HttpSession session = request.getSession();
+                // nếu session tại sản phẩm đó tồn tại
+                if (session.getAttribute(id) != null) {
+                    // thì số lượng trong cart sẽ được công lên 1
+                    int quantity = (int) session.getAttribute(id) + 1;
+                    session.setAttribute(id, quantity);
+                } else { // nếu chưa tồn tại thì bắt đầu với số lượng là 1
+                    session.setAttribute(id, 1);
+                }
+            }
+            response.sendRedirect("./User/cart.jsp");
         }
     }
 
@@ -78,24 +78,7 @@ public class RegisterConroller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User u = new User();
-        u.setuName(request.getParameter("txtName"));
-        u.setuAddress(request.getParameter("txtAddress"));
-        u.setuEmail(request.getParameter("txtEmail"));
-        u.setuPhone(request.getParameter("txtPhone"));
-        u.setuPass(request.getParameter("txtPass"));
-        u.setuGender(request.getParameter("txtGender"));
-        
-        Date pDate = Date.valueOf(request.getParameter("txtBirthday"));
-        u.setuBirthday(pDate);
-        
-        try {
-            UserDAO uDAO = new UserDAO();
-            uDAO.insertUsers(u);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        response.sendRedirect("login.jsp");
+        processRequest(request, response);
     }
 
     /**
