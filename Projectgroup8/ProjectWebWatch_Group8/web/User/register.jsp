@@ -14,6 +14,25 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <!------ Include the above in your HEAD tag ---------->
+        <!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+
+
+  <!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 
@@ -60,6 +79,94 @@
         </style>
     </head>
     <body>
+        
+        <% 
+         String msg = request.getParameter("message");
+        if(msg!=null && msg.equals("fail")) { %>
+        
+        
+        <%
+            String user = "";
+            try {
+                Cookie[] cookies = request.getCookies();
+                if (cookies.length > 1) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("useradmin")) {
+                            response.sendRedirect("../Admin/management.jsp");
+                        }else{
+                            response.sendRedirect("../webwatch/register.jsp");
+                        }
+                    }
+                }
+
+                //                out.print("Username: " + user);
+            } catch (Exception ex) {
+                 response.sendRedirect("../webwatch/register.jsp");
+            }
+
+        %>
+<!-- Frame Modal Bottom -->
+            <div class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+                <div class="modal-dialog modal-frame modal-top" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <p class="pt-3 pr-2 text-danger">You need input enough information!</p>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+        
+     <% 
+         }if(msg!=null && msg.equals("f")) {
+%>
+<!-- Frame Modal Bottom -->
+            <div class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+                <div class="modal-dialog modal-frame modal-top" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row d-flex justify-content-center align-items-center">
+                               <p class="pt-3 pr-2 text-danger">Enter password equal password again!</p>
+                                
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+        <%}if(msg!=null && msg.equals("e")) {
+     
+     %>
+        
+     <!-- Frame Modal Bottom -->
+            <div class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+                <div class="modal-dialog modal-frame modal-top" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <p class="pt-3 pr-2 text-danger">Email error!</p>
+                                
+                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     <%}%>
+        
+        
         <div>
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h4 class="card-title mt-3 text-center">Create Account</h4>
@@ -83,7 +190,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                         </div>
-                        <input name="txtPasswordAgain" class="form-control" placeholder="Password" type="password">
+                        <input name="txtPasswordAgain" class="form-control" placeholder="Confirm Password" type="password">
                     </div> <!-- form-group// -->
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
@@ -136,6 +243,12 @@
         </div> <!-- card.// -->
 
     </div> 
+    
+    <script>
+            $(document).ready(function () {
+                $("#frameModalBottom").modal('show');
+            });
+        </script>
    
 </body>
 </html>

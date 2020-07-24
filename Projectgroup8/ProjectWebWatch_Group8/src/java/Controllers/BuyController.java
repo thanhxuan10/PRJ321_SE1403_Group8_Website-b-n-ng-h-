@@ -84,12 +84,13 @@ public class BuyController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        // processRequest(request, response);
+       // xu li cac chuc nang khi mua hang
         PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();//tạo session khi mua hang
             BillDAO bDAO = new BillDAO();// tạo biến để gọi class BillsDAO
             CtBillDAO ctDAO = new CtBillDAO();// tạo biến để gọi class ctBillDAO
-         Bills bd = new Bills();
+            Bills bd = new Bills();
             String uId = "";
             Cookie[] cookie = request.getCookies();
             for (Cookie c : cookie) {

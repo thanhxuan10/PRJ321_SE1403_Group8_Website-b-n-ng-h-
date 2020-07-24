@@ -66,7 +66,7 @@ public class AdminControllers extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -75,6 +75,7 @@ public class AdminControllers extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // xu li cac chuc nang them sua san pham
         Products p = new Products();
 
         p.setpName(request.getParameter("pName"));

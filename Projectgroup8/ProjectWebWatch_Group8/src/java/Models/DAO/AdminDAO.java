@@ -17,13 +17,25 @@ import java.sql.SQLException;
  * @author HP
  */
 public class AdminDAO {
+
+    /**
+     *
+     */
     public Connection conn;
 
+    /**
+     * tao ham ket noi database 
+     * @throws SQLException
+     */
     public AdminDAO() throws SQLException {
         DBConnection db = new DBConnection();
         this.conn = db.getConnection();
     }
 
+    /**
+     * tao ham lay tat ca cac admin
+     * @return
+     */
     public ResultSet getAllAdmin() {
         String sql = "select * from admin";
         try {
@@ -36,6 +48,11 @@ public class AdminDAO {
         return null;
     }
 
+    /**
+     * tao ham lay tat ca cac admin theo aId
+     * @param aId
+     * @return
+     */
     public Admin getAdmin(int aId) {
         String sql = "select * from user where uId=?";
         try {
@@ -63,40 +80,15 @@ public class AdminDAO {
         return null;
     }
 
+   
     
 
-    public int updateAdmin(Admin a) {
-        try {
-            String sql = "insert into admin(aName, aPass, aEmail, aPhone, aAddress, aBirthday, aStatus, aGender) values(?,?,?,?,?,?,?)";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, a.getaName());
-            pst.setString(2, a.getaPass());
-            pst.setString(3, a.getaEmail());
-            pst.setString(4, a.getaPhone());
-            pst.setString(5, a.getaAddress());
-            pst.setDate(6, (Date) a.getaBirthday());
-            pst.setInt(7, a.getaStatus());
-            pst.setString(8, a.getaGender());
-            pst.setInt(9, a.getaId());
-            return pst.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return 0;
-    }
-
-    public int deleteUsers(int aId) {
-        try {
-            String sql = "delete from admin where aId=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, aId);
-            return pst.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return 0;
-    }
-
+    /**
+     * tao ham de login phia admin
+     * @param aEmail
+     * @param aPass
+     * @return
+     */
     public boolean loginAdmin(String aEmail, String aPass) {
         String sql = "select * from admin where aEmail=? and aPass=?";
         PreparedStatement pst;

@@ -4,6 +4,9 @@
     Author     : HP
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="Models.Entity.Products"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Models.DAO.ProductsDAO"%>
@@ -11,7 +14,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -63,11 +66,19 @@
                                 <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
                                 <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
                                 </svg> Bill</a></li>
+                        <li><a href="./comment.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
+                                <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                                </svg> Comment</a></li>
+                        <li><a href="./top10.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
+                                <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                                </svg> Revenue</a></li>
 
                     </ul>
                     <div class="pull-right">
                         <ul class="nav pull-right">
-                             <%
+                            <%
                                 String user = "";
                                 try {
                                     Cookie[] cookies = request.getCookies();
@@ -76,7 +87,7 @@
                                     } else {
                                         for (Cookie cookie : cookies) {
                                             if (cookie.getName().equals("useradmin")) {
-                                                out.print( "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Welcome,"+cookie.getValue()+"<b class='caret'></b></a>" );
+                                                out.print("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Welcome," + cookie.getValue() + "<b class='caret'></b></a>");
                                             }
                                         }
                                     }
@@ -86,14 +97,11 @@
                                     response.sendRedirect("../Admin");
                                 }
 
-                                    %>
-                                    
-                                <ul class="dropdown-menu">
-                                    <li><a href="/user/preferences"><i class="icon-cog"></i> Preferences</a></li>
-                                    <li><a href="https://mail.google.com/mail/u/0/#inbox"><i class="icon-envelope"></i> Contact Support</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="../LogoutController"><i class="icon-off"></i> Logout</a></li>
-                                </ul>
+                            %>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="../LogoutController"><i class="icon-off"></i> Logout</a></li>
+                            </ul>
                             </li>
                         </ul>
                     </div>
@@ -109,7 +117,15 @@
                 int pId = Integer.parseInt(request.getParameter("pId"));
                 ProductsDAO pDAO = new ProductsDAO();
                 Products p = new Products();
-                int kq = pDAO.updateStatus(pId);
+                p = pDAO.getProducts(pId);
+                int pStatus = p.getpStatus();
+                int kq = 0;
+                if (pStatus == 1) {
+                    kq = pDAO.updateStatus(0, pId);
+                } else {
+                    kq = pDAO.updateStatus(1, pId);
+                }
+
                 if (kq != 0) {
                     out.print("<script>alert('Xoa thanh cong');</script>");
                 } else {
@@ -182,19 +198,23 @@
                                         out.print("<td>" + rs.getString("pDescription") + "</td>");
                                         out.print("<td>" + rs.getDate("pDate") + "</td>");
                                         out.print("<td>" + rs.getInt("pStatus") + "</td>");
-                                        out.print("<td><a href='updateProducts.jsp?pId=" + rs.getInt("pId") + "'>Update</a></td>");
-                                        out.print("<td><a href='?pId=" + rs.getInt("pId") + "'>Delete</a></td>");
+                                        out.print("<td><a class='text-danger' href='updateProducts.jsp?pId=" + rs.getInt("pId") + "'><i class='fas fa-edit'></i></a></td>");
+                                        out.print("<td><a  href='?pId=" + rs.getInt("pId") + "'><i class='fas fa-trash'></i></a></td>");
                                         out.print("</tr>");
                                     }
                                     //out.print("<td><a href='insertProduct.jsp>Insert</a></td>");
-                                %>
+%>
                                 <!--            <img src="./Img/1.png" width="200px" alt="imgeas"/>-->
                             </tbody>
                         </table>
-                        <a href="./insertProduct.jsp" > Insert Info</a>
 
+                        <button style="width: 100%"> <a class="btn_1 checkout_btn_1" href="./insertProduct.jsp" > <b>Insert products</b></a></button>
 
                     </div>
+
+
+
+
 
                     <div class="clearfix"></div>
                     <ul class="pagination pull-right">
@@ -263,6 +283,8 @@
         </div>
         <!-- /.modal-dialog --> 
     </div>
+
+
 
 
 

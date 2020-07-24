@@ -57,7 +57,7 @@ public class LoginControllers extends HttpServlet {
                 }
                 
         
-        response.sendRedirect("./webwatch/index.jsp");
+        response.sendRedirect("./webwatch/home");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -110,12 +110,13 @@ public class LoginControllers extends HttpServlet {
                     
                     response.addCookie(idCookie);
                     
-                    response.sendRedirect("./User/products.jsp");
+                    response.sendRedirect("./webwatch/home");
                 } else {
-                    out.println("<script type=\"text/javascript\">");
-                    out.println("alert('User or password incorrect');");
-                    out.println("location='./webwatch/login.jsp';");
-                    out.println("</script>");
+//                    out.println("<script type=\"text/javascript\">");
+//                    out.println("alert('User or password incorrect');");
+//                    out.println("location='./webwatch/login.jsp';");
+//                    out.println("</script>");
+                    response.sendRedirect("./webwatch/login.jsp?message=fail");
 
                 }}
             } catch (SQLException ex) {

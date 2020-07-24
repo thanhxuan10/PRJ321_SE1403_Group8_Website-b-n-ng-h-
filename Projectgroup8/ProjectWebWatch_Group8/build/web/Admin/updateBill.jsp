@@ -12,9 +12,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <!------ Include the above in your HEAD tag ---------->
+        
+        
         
         <title>JSP Page</title>
         <style>
@@ -117,11 +120,35 @@
     </head>
     <body>
         <%
+                                String user = "";
+                                try {
+                                    Cookie[] cookies = request.getCookies();
+                                    if (cookies.length <= 1) {
+                                        response.sendRedirect("../Admin");
+                                    } else {
+                                        for (Cookie cookie : cookies) {
+                                            if (cookie.getName().equals("useradmin")) {
+                                                out.print( "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Welcome,"+cookie.getValue()+"<b class='caret'></b></a>" );
+                                            }
+                                        }
+                                    }
+
+                                    //                out.print("Username: " + user);
+                                } catch (Exception ex) {
+                                    response.sendRedirect("../Admin");
+                                }
+
+                                    %>
+        
+        
+        
+        
+        <%
             int bId = 0;
             int uId = 0;
             String bName = "";
             String bNote = "";
-            String bStatus = "";
+            int bStatus = 0;
             String bPhone = "";
             String bAddress = "";
             double bTotal = 0;
@@ -133,11 +160,11 @@
                 Bills b = bDAO.getBill(bId);
                 bName = b.getbName();
                 bNote = b.getbNote();
-                bStatus = b.getbStatus();
                 bPhone = b.getbPhone();
                 bAddress = b.getbAddress();
                 bDate = b.getbDate().toString();
                 bTotal = b.getbTotal();
+                bStatus = b.getbStatus();
             }
 
         %>
@@ -157,10 +184,13 @@
                                 <div class="row insert-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <input type="hidden" class="form-control" placeholder="Bill id *" value="<%= bId%>" name="bId" id="bId"/>
+                                        </div>
+                                        <div class="form-group">
                                             <input type="text" class="form-control" placeholder="User id *" value="<%= uId%>" name="uId" id="uId"/>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Bill status*" value="<%= bStatus%>" name="bStatus" id="bStatus"/>
+                                            <input type="hidden" class="form-control" placeholder="Bill status*" value="<%= bStatus%>" name="bStatus" id="bStatus"/>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control" placeholder="Bill note *" value="<%= bNote%>" name="bNote" id="bNote"/>

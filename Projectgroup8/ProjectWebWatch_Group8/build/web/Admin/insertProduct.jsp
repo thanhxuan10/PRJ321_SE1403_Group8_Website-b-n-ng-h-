@@ -118,27 +118,21 @@
     </head>
     <body>
         <%
-//            if (request.getParameter("btnInsert") != null) {
-//                Products p = new  Products();
-//             
-//                p.setpName(request.getParameter("pName"));
-//                p.setpBprices(Double.parseDouble(request.getParameter("pBprices")));
-//                p.setpAmount(Integer.parseInt(request.getParameter("pAmount")));
-//                p.setpIprices(Double.parseDouble(request.getParameter("pIprices")));
-//                p.setpGender(request.getParameter("pGender"));
-//                p.setpGuarantee(request.getParameter("pGuarantee"));
-//                p.setpDiscount(request.getParameter("pDiscount"));
-//                p.setpDescription(request.getParameter("pDescription"));
-//                p.setpDate(Date.valueOf(request.getParameter("pDate")));
-//
-//                ProductsDAO pdao= new ProductsDAO();
-//                pdao.insertProducts(p);
-//                response.sendRedirect("management.jsp");
-//                
-//            } 
+                                try {
+                                    Cookie[] cookies = request.getCookies();
+                                    if (cookies.length >1) {
+                                        for (Cookie cookie : cookies) {
+                                            if (cookie.getName().equals("useradmin")) {
+                                                response.sendRedirect("./Admin/management.jsp");
+                                            }
+                                        }
+                                    } 
+                                    //                out.print("Username: " + user);
+                                } catch (Exception ex) {
+                                   
+                                }
 
-
-        %>
+                            %>
         
 
 

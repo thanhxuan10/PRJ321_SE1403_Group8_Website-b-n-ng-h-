@@ -22,6 +22,16 @@ public class BillDAO {
         DBConnection db = new DBConnection();
         this.conn = db.getConnection();
     }
+    /**
+     * tao ham tao bill
+     * @param uId
+     * @param bNote
+     * @param bAddress
+     * @param bName
+     * @param bPhone
+     * @return
+     * @throws SQLException 
+     */
     public int createBill(int uId, String bNote, String bAddress, String bName, String bPhone) throws SQLException {
         
         String sql = "Insert into bill(uId, bNote, bAddress, bName, bPhone, bTotal) values(?,?,?,?,?,?)";
@@ -46,7 +56,12 @@ public class BillDAO {
             return 0;
         }
     }
-    
+    /**
+     * tao ham update bill va total price
+     * @param bId
+     * @return
+     * @throws SQLException 
+     */
 
     public int updateBillTotalPrice(int bId) throws SQLException {
         double total = 0;
@@ -65,6 +80,10 @@ public class BillDAO {
         
         return ps2.executeUpdate();
     }
+    /**
+     * ta ham lay tat ca cac bill
+     * @return 
+     */
     public ResultSet getAllBill() {
         String sql = "select * from bill";
         try {
@@ -77,6 +96,11 @@ public class BillDAO {
         return null;
     }
 
+    /**
+     * tao ham xoa bill
+     * @param bId
+     * @return 
+     */
     public int deleteBill(int bId) {
         try {
             String sql = "delete from bill where bId=?";
@@ -89,6 +113,11 @@ public class BillDAO {
         }
         return 0;
     }
+    /**
+     * tao ham lay bill theo bId
+     * @param bId
+     * @return 
+     */
     public Bills getBill(int bId) {
         String sql = "select * from bill where bId=?";
         try {
@@ -100,7 +129,7 @@ public class BillDAO {
                 Bills b = new Bills(
                         rs.getInt("bId"),
                         rs.getInt("uId"),
-                        rs.getString("bStatus"),
+                        rs.getInt("bStatus"),
                         rs.getString("bNote"),
                         rs.getString("bAddress"),
                         rs.getString("bName"),
@@ -114,11 +143,65 @@ public class BillDAO {
         }
         return null;
     }
+    /**
+     * tao ham lay bill theo user
+     * @param uId
+     * @return 
+     */
+    public Bills getBillUser(int uId) {
+        String sql = "select * from bill where uId=?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, uId);
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                Bills b = new Bills(
+                        rs.getInt("bId"),
+                        rs.getInt("uId"),
+                        rs.getInt("bStatus"),
+                        rs.getString("bNote"),
+                        rs.getString("bAddress"),
+                        rs.getString("bName"),
+                        rs.getString("bPhone"),
+                        rs.getDouble("bTotal"),
+                         rs.getDate("bDate"));
+                return b;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * tao ham lay bill theo user
+     * @param uId
+     * @return 
+     */
+    public ResultSet getuserBill(int uId) {
+        String sql = "select * from bill where uId=?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, uId);
+            ResultSet rs = pst.executeQuery();
+            
+           return rs;
+           
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * tao ham update bill
+     * @param b
+     * @return 
+     */
     public int updateBill(Bills b) {
         try {
             String sql = "update bill set bStatus=?, bNote=?, bAddress=?, bName=?, bPhone=?, bDate=? where bId=?";
             PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, b.getbStatus());
+            pst.setInt(1, b.getbStatus());
             pst.setString(2, b.getbNote());
             pst.setString(3, b.getbAddress());
             pst.setString(4, b.getbName());
@@ -131,11 +214,18 @@ public class BillDAO {
         }
         return 0;
     }
-    public int updateStatus(int bId) {
+    /**
+     * tao ham update status bill
+     * @param bStatus
+     * @param bId
+     * @return 
+     */
+    public int updateStatus(int bStatus, int bId) {
         try {
-            String sql = "update bill set bStatus=1 where bId=?";
+            String sql = "update bill set bStatus=? where bId=?";
             PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, bId);
+            pst.setInt(1, bStatus);
+            pst.setInt(2, bId);
            
             return pst.executeUpdate();
         } catch (SQLException ex) {

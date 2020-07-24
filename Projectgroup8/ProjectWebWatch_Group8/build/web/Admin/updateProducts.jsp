@@ -117,6 +117,29 @@
     </head>
     <body>
         <%
+                                String user = "";
+                                try {
+                                    Cookie[] cookies = request.getCookies();
+                                    if (cookies.length <= 1) {
+                                        response.sendRedirect("../Admin");
+                                    } else {
+                                        for (Cookie cookie : cookies) {
+                                            if (cookie.getName().equals("useradmin")) {
+                                                out.print( "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Welcome,"+cookie.getValue()+"<b class='caret'></b></a>" );
+                                            }
+                                        }
+                                    }
+
+                                    //                out.print("Username: " + user);
+                                } catch (Exception ex) {
+                                    response.sendRedirect("../Admin");
+                                }
+
+                                    %>
+        
+        
+        
+        <%
             int pId = 0;
             String pName = "";
             double pBprices = 0;

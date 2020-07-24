@@ -1,170 +1,204 @@
 <%-- 
-    Document   : buy
-    Created on : Jul 7, 2020, 1:56:50 PM
+    Document   : login
+    Created on : Jul 5, 2020, 2:18:01 PM
     Author     : HP
 --%>
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Made with love by Mutiullah Samim -->
 
+        <!--Bootsrap 4 CDN-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <!--    Fontawesome CDN
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
+
+        <!--Custom styles-->
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <!--Custom styles-->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Watch shop </title>
-
-
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Watch shop | eCommers</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="site.webmanifest">
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
 
-        <!-- CSS here -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="assets/css/flaticon.css">
-        <link rel="stylesheet" href="assets/css/slicknav.css">
-        <link rel="stylesheet" href="assets/css/animate.min.css">
-        <link rel="stylesheet" href="assets/css/magnific-popup.css">
-        <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="assets/css/themify-icons.css">
-        <link rel="stylesheet" href="assets/css/slick.css">
-        <link rel="stylesheet" href="assets/css/nice-select.css">
-        <link rel="stylesheet" href="assets/css/style.css">
+
         <style>
-            .note
-{
-    text-align: center;
-    height: 80px;
-    background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-    color: #fff;
-    font-weight: bold;
-    line-height: 80px;
-}
-.form-content
-{
-    padding: 5%;
-    border: 1px solid #ced4da;
-    margin-bottom: 2%;
-}
-.form-control{
-    border-radius:1.5rem;
- 
-}
-.btnSubmit
-{
-    border:none;
-    border-radius:1.5rem;
-    padding: 1%;
-    width: 20%;
-    cursor: pointer;
-    background: #0062cc;
-    color: #fff;
-}
+            /* Made with love by Mutiullah Samim*/
+
+            @import url('https://fonts.googleapis.com/css?family=Numans');
+
+            html,body{
+                background-image: url('https://blog.hamtruyentranh.com/wp-content/uploads/2019/01/as.jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                height: 100%;
+                font-family: 'Numans', sans-serif;
+            }
+
+            .container{
+                height: 100%;
+                align-content: center;
+            }
+
+            .card{
+                height: 370px;
+                margin-top: auto;
+                margin-bottom: auto;
+                width: 400px;
+                background-color: rgba(0,0,0,0.5) !important;
+            }
+
+            .social_icon span{
+                font-size: 60px;
+                margin-left: 10px;
+                color: #FFC312;
+            }
+
+            .social_icon span:hover{
+                color: white;
+                cursor: pointer;
+            }
+
+            .card-header h3{
+                color: white;
+            }
+
+            .social_icon{
+                position: absolute;
+                right: 20px;
+                top: -45px;
+            }
+
+            .input-group-prepend span{
+                width: 40px;
+                background-color: #FFC312;
+                color: black;
+                border:0 !important;
+            }
+
+            input:focus{
+                outline: 0 0 0 0  !important;
+                box-shadow: 0 0 0 0 !important;
+
+            }
+
+            .remember{
+                color: white;
+            }
+
+            .remember input
+            {
+                width: 20px;
+                height: 20px;
+                margin-left: 15px;
+                margin-right: 5px;
+            }
+            .input-group form-group{
+                color:white;
+                width: 100%;
+            }
+
+            .login_btn{
+                color: black;
+                background-color: #FFC312;
+                width: 170px;
+                /*margin-left:15px;*/
+            }
+
+            .login_btn:hover{
+                color: black;
+                background-color: white;
+            }
+
+            .links{
+                color: white;
+            }
+
+            .links a{
+                margin-left: 4px;
+            }
+
+            .btn float-center login_btn{
+                margin-left: 100px;
+                width: 100%;
+            }
+            .card-footer{
+                margin-bottom:  100px;
+            }
+
         </style>
     </head>
     <body>
-       <header>
-            <!-- Header Start -->
-            <div class="header-area">
-                <div class="main-header header-sticky">
-                    <div class="container-fluid">
-                        <div class="menu-wrapper">
-                            <!-- Logo -->
-                            <div class="logo">
-                                <a href="index.jsp"><img src="assets/img/logo/logo3.png" alt=""></a>
-                            </div>
-                            <!-- Main-menu -->
-                            <div class="main-menu d-none d-lg-block">
-                                <nav>                                                
-                                    <ul id="navigation">  
-                                        <li><a href="../webwatch/index.jsp">Home</a></li>
-                                        <li><a href="products.jsp.jsp">shop</a></li>
-                                        <li><a href="../webwatch/about.jsp">about</a></li>
 
-                                        <li><a href="../webwatch/blog-details.jsp">Blog</a>
+        <%
+            String user = "";
+            try {
+                Cookie[] cookies = request.getCookies();
+                if (cookies.length <= 1) {
+                    response.sendRedirect("../webwatch/login.jsp");
+                } else {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("useradmin")) {
+                            response.sendRedirect("../Admin/management.jsp");
+                        }else{
+                            response.sendRedirect("../webwatch/login.jsp");
+                        }
+                    }
+                }
 
-                                        </li>
+                //                out.print("Username: " + user);
+            } catch (Exception ex) {
+                response.sendRedirect("../webwatch/login.jsp");
+            }
 
-                                        <li><a href="contact.jsp">Contact</a></li>
-                                         
-                                    </ul>
-                                </nav>
-                            </div>
-                            <!-- Header Right -->
-                           <div class="header-right">
-                                <ul>
-                                    <li>
-                                        <div class="nav-search search-switch">
-                                            <%
-                                                Cookie[] cookies = request.getCookies();
-                                                if (cookies.length > 1) {
-                                                    for (Cookie cookie : cookies) {
-                                                        if (cookie.getName().equals("user")) {
-                                                            out.print(" <div class='header-right'><div class='nav-search search-switch'><ul>");
-                                                            out.print("<li><a style='color: black' href='#'>" + cookie.getValue() + "</li></a>");
+        %>
 
-                                                            out.print("<li><a style='color: black' href='../LoginControllers'>Logout</li></a>");
-                                                            out.print("</ul></div></div>");
-                                                        }else if(cookie.getName().equals("useradmin")){
-                                                            response.sendRedirect("../Admin/management.jsp");
-                                                        }
-                                                    }
-                                                } else {
-                                                    out.print("<div class='header-right'><div class='nav-search search-switch'><ul>");
-                                                    out.print("<a href='../webwatch/login.jsp'><span class='flaticon-user'>");
-                                                    out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'>");
-                                                    out.print("</ul></div></div>");
-                                                }
-                                            %>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Mobile Menu -->
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
-                        </div>
+
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Information to buy</h3>
+
                     </div>
-                </div>
-            </div>
-            <!-- Header End -->
-        </header>
-        <form action="../buyController" method="post">
-           <div class="container register-form">
-            <div class="form">
-                <div class="note" >
-                    <marquee><p style="color: white"> Enter infomation to buy</p></marquee> 
-                </div>
+                    <div class="card-body">
+                        <form action="../buyController" method="post">
+                            <div class="input-group form-group">
+                                <input type="text" class="form-control" placeholder="Recipient's name:" name="bName">
+                            </div>
+                            <div class="input-group form-group">
+                                <input type="text" class="form-control" placeholder="Recipient's address" name="bAddress">
+                            </div>
+                            <div class="input-group form-group">
 
-                <div class="form-content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                               Recipient's name<input type="text" class="form-control" placeholder="name *"size="20" value=""/>
+
+                                <input type="text" class="form-control" placeholder="Recipient's phone" name="bPhone">
                             </div>
-                            <div class="form-group">
-                                Recipient's address<input type="text" class="form-control" placeholder="address *" value=""/>
+                            <div class="input-group form-group">
+                                <input type="text" class="form-control" placeholder="Note" name="bNote">
                             </div>
-                        </div>
-                        <div class="col-md-6">
+                            <!--<div class="row align-items-center remember">-->
+                            <!--	<input type="checkbox">Remember Me-->
+                            <!--</div>-->
                             <div class="form-group">
-                                Recipient's phone<input type="text" class="form-control" placeholder="phone *" value=""/>
+
+                                <input type="submit"  name="btnBuy" value="Submit" class="btn float-center login_btn" style="width: 100%"/>
                             </div>
-                            <div class="form-group">
-                                Note<input type="text" class="form-control" placeholder="note *" value=""/>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                    <button type="button" class="btnSubmit"  name="btnBuy">BUY</button>
+
                 </div>
             </div>
         </div>
-            
-        </form>
     </body>
 </html>
+

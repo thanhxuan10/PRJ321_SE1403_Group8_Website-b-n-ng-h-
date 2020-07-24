@@ -50,21 +50,17 @@
                             <div class="menu-wrapper">
                                 <!-- Logo -->
                                 <div class="logo">
-                                    <a href="index.jsp"><img src="assets/img/logo/logo3.png" alt=""></a>
+                                    <a href="index.jsp"><img src="assets/img/logo/logo4.png" alt=""></a>
                                 </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-lg-block">
                                     <nav>                                                
                                         <ul id="navigation">  
-                                            <li><a href="../webwatch/index.jsp">Home</a></li>
-                                            <li><a href="products.jsp.jsp">shop</a></li>
-                                            <li><a href="../webwatch/about.jsp">about</a></li>
+                                            <li><a style="font-size: 30px" href="../webwatch/home">Home</a></li>
+                                            <li><a style="font-size: 30px" href="products.jsp">shop</a></li>
+                                            <li><a style="font-size: 30px" href="../webwatch/about.jsp">about</a></li>
 
-                                            <li><a href="../webwatch/blog-details.jsp">Blog</a>
 
-                                            </li>
-
-                                            <li><a href="contact.jsp">Contact</a></li>
 
                                         </ul>
                                     </nav>
@@ -75,27 +71,47 @@
                                         <li>
                                             <div class="nav-search search-switch">
                                                 <%
-                                                    Cookie[] cookies = request.getCookies();
-                                                    if (cookies.length > 1) {
-                                                        for (Cookie cookie : cookies) {
-                                                            if (cookie.getName().equals("user")) {
-                                                                out.print(" <div class='header-right'><div class='nav-search search-switch'><ul>");
-                                                                out.print("<li><a style='color: black' href='#'>" + cookie.getValue() + "</li></a>");
+                                                Cookie[] cookies = request.getCookies();
+                                                boolean check = false;
+                                                if (cookies.length > 1) {
+                                                    for (Cookie cookie : cookies) {
+                                                        if (cookie.getName().equals("user")) {
+                                                            check = true;
 
-                                                                out.print("<li><a style='color: black' href='../LoginControllers'>Logout</li></a>");
-                                                                out.print("</ul></div></div>");
-                                                            } else if (cookie.getName().equals("useradmin")) {
-                                                                response.sendRedirect("../Admin/management.jsp");
-                                                            }
+                                                        } else if (cookie.getName().equals("useradmin")) {
+                                                            check = true;
                                                         }
-                                                    } else {
-                                                        out.print("<div class='header-right'><div class='nav-search search-switch'><ul>");
-                                                        out.print("<a href='../webwatch/login.jsp'><span class='flaticon-user'>");
-                                                        out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'>");
-                                                        out.print("</ul></div></div>");
                                                     }
-                                                %>
+                                                } 
+                                                if (check) {
+                                                    String uId = "";
+                                                    for (Cookie c : cookies) {
+                                                        String cName = c.getName();
+                                                        if (cName.equals("uId")) {
+                                                            uId = c.getValue();
+                                                        }
+                                                    }
+                                                    for (Cookie cookie : cookies) {
+                                                        if (cookie.getName().equals("user")) {
+                                                            out.print(" <div class='header-right'><div class='nav-search search-switch'><ul>");
+                                                            out.print("<li><a style='color: black' href='../webwatch/confirmation.jsp?uId=" + Integer.parseInt(uId) + "'>" + cookie.getValue() + "</li></a>");
+
+                                                            out.print("<li><a style='color: black;margin-left: 15px' href='../LoginControllers'><i class='fas fa-sign-out-alt'></i></li></a>");
+                                                            out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'></span></a>");
+                                                            out.print("</ul></div></div>");
+                                                        } else if (cookie.getName().equals("useradmin")) {
+                                                            response.sendRedirect("../Admin/management.jsp");
+                                                        }
+                                                    }
+                                                } else {
+                                                    out.print("<div class='header-right'><div class='nav-search search-switch'><ul>");
+                                                    out.print("<a href='../webwatch/login.jsp'><span class='flaticon-user'></span></a>");
+                                                    out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'></span></a>");
+                                                    out.print("</ul></div></div>");
+                                                }
+                                            %>
                                             </div>
+
                                         </li>
                                     </ul>
                                 </div>
@@ -130,12 +146,14 @@
                     // lấy tất cả các tên của đối tượng ở trong session
                     Enumeration<String> pName = session.getAttributeNames();
                     if (!pName.hasMoreElements()) {
-                        out.print("<h2>Vui long mua hang di</h2>");
-                        out.print("<div class='checkout_btn_inner float-right'>");
-                        out.print("<a class='btn_1' href='products.jsp'>Continue Shopping</a>");
-                        out.print("<a class='btn_1 checkout_btn_1' href='buy.jsp'>Buy</a>");
-                        out.print("</div>");
-                    } else {
+                        out.print("<h2 style='text-align: center'>You don't have any products in cart.</h2>");
+                        
+%>
+                    <div style="margin-left: 35rem">
+                                <a class="btn_1" href="products.jsp">Continue Shopping</a>
+                               
+                            </div>
+                <%} else {
                 %>
                 <div class="container">
                     <div class="cart_inner">
@@ -164,16 +182,18 @@
                                             out.print("<tr>");
 
                                             out.print("<td><div class='media'><div class='d-flex'><img src='../" + p.getpImage() + "'/></div></div></td>");
-                                            out.print("<td>" + p.getpName() + "</td>");
-                                            out.print("<td>" + session.getAttribute(id) + "</td>");
-                                            out.print("<td>" + p.getpBprices() + "</td>");
+                                            out.print("<td style='color: black'>" + p.getpName() + "</td>");
+                                            out.print("<td style='color: black'>" + session.getAttribute(id) + "</td>");
+                                            out.print("<td style='color: black'>" + p.getpBprices() + "</td>");
                                             out.print("<td><a style='color: black' href='cart.jsp?del=" + p.getpId() + "'>Delete</a></td>");
                                             out.print("</tr>");
                                         } catch (Exception e) {
                                         }
-                                    }
+                                        }
+                                    out.print("<tr><td colspan='3' style='color: black'>Tong tien</td><td style='color: black'>" + total + "</td></tr>");
+                                    
 
-                                    out.print("<tr><td colspan='3'>Tong tien</td><td>" + total + "</td></tr>");
+                                    
 
                                 %>
                             </table>
@@ -186,7 +206,88 @@
                     </div>
                 </div>
             </section>
-
+    <footer>
+        <!-- Footer Start-->
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-12 col-lg-12 col-md-50 col-sm-12">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-50">
+                                <!-- logo -->
+                                <div class="footer-logo">
+                                     <a href="index.html"><img src="assets/img/logo/logo4.png" alt=""></a> 
+                                </div>
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do eiusmod tem.</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+               
+                  
+                </div>
+                <!-- Footer bottom -->
+                <div class="row align-items-center">
+                    <div class="col-xl-7 col-lg-8 col-md-7">
+                        <div class="footer-copy-right">
+                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Be made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://www.facebook.com/moon.xuan.5" target="_blank">Group 8</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                  
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-4 col-md-5">
+                        <div class="footer-copy-right f-right">
+                            <!-- social -->
+                            <div class="footer-social">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                        </footer>
         </body>
-    </body>
+        
+    
+    <!-- All JS Custom Plugins Link Here here -->
+        <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+        <!-- Jquery, Popper, Bootstrap -->
+        <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="./assets/js/popper.min.js"></script>
+        <script src="./assets/js/bootstrap.min.js"></script>
+        <!-- Jquery Mobile Menu -->
+        <script src="./assets/js/jquery.slicknav.min.js"></script>
+
+        <!-- Jquery Slick , Owl-Carousel Plugins -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script src="./assets/js/slick.min.js"></script>
+
+        <!-- One Page, Animated-HeadLin -->
+        <script src="./assets/js/wow.min.js"></script>
+        <script src="./assets/js/animated.headline.js"></script>
+        <script src="./assets/js/jquery.magnific-popup.js"></script>
+
+        <!-- Scroll up, nice-select, sticky -->
+        <script src="./assets/js/jquery.scrollUp.min.js"></script>
+        <script src="./assets/js/jquery.nice-select.min.js"></script>
+        <script src="./assets/js/jquery.sticky.js"></script>
+
+        <!-- contact js -->
+        <script src="./assets/js/contact.js"></script>
+        <script src="./assets/js/jquery.form.js"></script>
+        <script src="./assets/js/jquery.validate.min.js"></script>
+        <script src="./assets/js/mail-script.js"></script>
+        <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+        <!-- Jquery Plugins, main Jquery -->	
+        <script src="./assets/js/plugins.js"></script>
+        <script src="./assets/js/main.js"></script>
 </html>

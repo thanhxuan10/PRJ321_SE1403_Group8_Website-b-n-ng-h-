@@ -4,6 +4,7 @@
     Author     : HP
 --%>
 
+<%@page import="Models.Entity.User"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Models.DAO.UserDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,9 +12,10 @@
 <html>
     <head>
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
-        <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
@@ -47,30 +49,54 @@
 
                     <ul class="nav">
                         <li class="divider-vertical"></li>
-                        <li><a href="../webwatch/index.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <li><a href="./management..jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
                                 <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
                                 </svg></i> Home</a></li>
-                        <li><a href="./management.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <li><a href="./user.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M2 3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zm6 7a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 11.825 10.623 11 8 11s-4.146.826-5 1.755V13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
-                                </svg></i> Admin</a></li>
+                                </svg></i> User</a></li>
                         <li><a href="./bill.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
                                 <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
                                 </svg> Bill</a></li>
-
+                        <li><a href="./comment.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
+                                <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                                </svg> Comment</a></li>
+                        <li><a href="./top10.jsp"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M15 4H1v8h14V4zM1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1z"/>
+                                <path d="M13 4a2 2 0 0 0 2 2V4h-2zM3 4a2 2 0 0 1-2 2V4h2zm10 8a2 2 0 0 1 2-2v2h-2zM3 12a2 2 0 0 0-2-2v2h2zm7-4a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                                </svg> Revenue</a></li>
 
 
                     </ul>
-                    <div class="pull-right">
+                     <div class="pull-right">
                         <ul class="nav pull-right">
-                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome to page User</a>
-                                <!--                        <ul class="dropdown-menu">
-                                                            <li><a href="/user/preferences"><i class="icon-cog"></i> Preferences</a></li>
-                                                            <li><a href="https://mail.google.com/mail/u/0/#inbox"><i class="icon-envelope"></i> Contact Support</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="../webwatch/login.jsp"><i class="icon-off"></i> Logout</a></li>
-                                                        </ul>-->
+                             <%
+                                String user = "";
+                                try {
+                                    Cookie[] cookies = request.getCookies();
+                                    if (cookies.length <= 1) {
+                                        response.sendRedirect("../Admin");
+                                    } else {
+                                        for (Cookie cookie : cookies) {
+                                            if (cookie.getName().equals("useradmin")) {
+                                                out.print( "<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Welcome,"+cookie.getValue()+"<b class='caret'></b></a>" );
+                                            }
+                                        }
+                                    }
+
+                                    //                out.print("Username: " + user);
+                                } catch (Exception ex) {
+                                    response.sendRedirect("../Admin");
+                                }
+
+                                    %>
+                                    
+                                <ul class="dropdown-menu">
+                                   <li><a href="../LogoutController"><i class="icon-off"></i> Logout</a></li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
@@ -82,7 +108,14 @@
         <%            if (request.getParameter("uId") != null) {
                 int uId = Integer.parseInt(request.getParameter("uId"));
                 UserDAO uDAO = new UserDAO();
-                int kq = uDAO.updateStatus(uId);
+                User u = uDAO.getUser(uId);
+                int uStatus = u.getuStatus();
+                int kq =0;
+                if(uStatus==1){
+                    kq = uDAO.updateStatus(0,uId);
+                }else{
+                    kq = uDAO.updateStatus(1,uId);
+                }
                 if (kq != 0) {
                     out.print("<script>alert('Xoa thanh cong');</script>");
                 } else {
@@ -113,7 +146,6 @@
                                     <th>Birthday</th>
                                     <th>Status</th>
                                     <th>Gender</th>
-                                    <th>Update</th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
@@ -133,8 +165,8 @@
                                         out.print("<td>" + rs.getString("uStatus") + "</td>");
                                         out.print("<td>" + rs.getString("uGender") + "</td>");
 
-                                        out.print("<td><a href='updateUser.jsp?uId=" + rs.getInt("uId") + "'>Update</a></td>");
-                                        out.print("<td><a href='?uId=" + rs.getInt("uId") + "'>Delete</a></td>");
+                                        
+                                        out.print("<td><a href='?uId=" + rs.getInt("uId") + "'><i class='fas fa-trash'></a></td>");
                                         out.print("</tr>");
                                     }
                                     //out.print("<td><a href='insertProduct.jsp>Insert</a></td>");

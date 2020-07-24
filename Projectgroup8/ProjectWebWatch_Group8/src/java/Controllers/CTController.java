@@ -32,7 +32,7 @@ public class CTController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");// set cho project chay thang vao dssp.jsp
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");// set cho project chay thang vao index.jsp
        dispatcher.forward(request, response);
     }
 

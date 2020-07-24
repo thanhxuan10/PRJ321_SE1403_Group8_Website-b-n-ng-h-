@@ -20,13 +20,24 @@ import java.util.logging.Logger;
  */
 public class UserDAO {
 
+    /**
+     *
+     */
     public Connection conn;
 
+    /**
+     * ham ket noi databse
+     * @throws SQLException
+     */
     public UserDAO() throws SQLException {
         DBConnection db = new DBConnection();
         this.conn = db.getConnection();
     }
 
+    /**
+     * ham lay tat ca user
+     * @return
+     */
     public ResultSet getAllUser() {
         String sql = "select * from user";
         try {
@@ -39,6 +50,11 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * ham lay tat ca theo id
+     * @param uId
+     * @return
+     */
     public User getUser(int uId) {
         String sql = "select * from user where uId=?";
         try {
@@ -66,9 +82,14 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * ham insert user 
+     * @param u
+     * @return
+     */
     public boolean insertUsers(User u) {
         try {
-            String sql = "insert into user(uName, uPass, uEmail, uPhone, uAddress, uBirthday, uStatus, uGender) values(?,?,?,?,?,?,?,?)";
+            String sql = "insert into user(uName, uPass, uEmail, uPhone, uAddress, uBirthday, uStatus, uGender) values(?,MD5(?),?,?,?,?,?,?)";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, u.getuName());
             pst.setString(2, u.getuPass());
@@ -85,6 +106,11 @@ public class UserDAO {
         return false;
     }
 
+    /**
+     * ham sua user
+     * @param u
+     * @return
+     */
     public int updateUsers(User u) {
         try {
             String sql = "UPDATE `user` SET `uName`=?,`uPass`=?,`uEmail`=?,`uPhone`=?,`uAddress`=?,`uBirthday`=?,`uStatus`=?,`uGender`=? WHERE `uId`=?";
@@ -105,6 +131,11 @@ public class UserDAO {
         return 0;
     }
 
+    /**
+     * ham xoa user
+     * @param uId
+     * @return
+     */
     public int deleteUsers(int uId) {
         try {
             String sql = "delete from user where uId=?";
@@ -117,6 +148,12 @@ public class UserDAO {
         return 0;
     }
 
+    /**
+     * ham login user
+     * @param uEmail
+     * @param uPass
+     * @return
+     */
     public int login(String uEmail, String uPass) {
         String sql = "select uId from user where uEmail=? and uPass=MD5(?)";
         PreparedStatement pst;
@@ -137,12 +174,65 @@ public class UserDAO {
         return -1;
 
     }
-    public int updateStatus(int uId) {
+
+    /**
+     * ham tim password
+     * @param uPass
+     * @return
+     */
+    public int searchPass(String uPass) {
+        String sql = "select uId from user where uPass=MD5(?)";
+        PreparedStatement pst;
         try {
-            String sql = "update user set uStatus=1 where uId=?";
+            pst = conn.prepareStatement(sql);
+
+            pst.setString(1, uPass);
+            
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                return rs.getInt("uId");
+            }
+            
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+
+    }
+
+    /**
+     * ham thay doi trang thai nguoi dung
+     * @param uStatus
+     * @param uId
+     * @return
+     */
+    public int updateStatus(int uStatus,int uId) {
+        try {
+            String sql = "update user set uStatus=? where uId=?";
             PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, uId);
+            pst.setInt(1, uStatus);
+            pst.setInt(2, uId);
            
+            return pst.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     *
+     * @param u
+     * @param uId
+     * @return
+     */
+    public int updatePass(User u, int uId) {
+        try {
+            String sql = "update user set uPass=MD5(?) where uId=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, u.getuPass());
+            pst.setInt(2, uId);
             return pst.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();

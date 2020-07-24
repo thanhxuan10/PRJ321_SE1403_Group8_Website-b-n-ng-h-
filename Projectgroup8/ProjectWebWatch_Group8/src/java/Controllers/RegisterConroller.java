@@ -78,24 +78,45 @@ public class RegisterConroller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // xu li va bat loi tao tai khoan
+        try {
         User u = new User();
-        u.setuName(request.getParameter("txtName"));
-        u.setuAddress(request.getParameter("txtAddress"));
-        u.setuEmail(request.getParameter("txtEmail"));
-        u.setuPhone(request.getParameter("txtPhone"));
-        u.setuPass(request.getParameter("txtPass"));
-        u.setuGender(request.getParameter("txtGender"));
-       
-        Date pDate = Date.valueOf(request.getParameter("txtBirthday"));
+        String name =request.getParameter("txtName");
+        String address =request.getParameter("txtAddress");
+        String email =request.getParameter("txtEmail");
+        String phone =request.getParameter("txtPhone");
+        String pass =request.getParameter("txtPass");
+        String apass =request.getParameter("txtPasswordAgain");
+        String gender =request.getParameter("txtGender");
+        String date =request.getParameter("txtBirthday");
+        if(name.equals("")||address.equals("")||email.equals("")||pass.equals("")||gender.equals("")||date.equals("")){
+            response.sendRedirect("./User/register.jsp?message=fail");
+        }else if(!pass.equals(apass)){
+            response.sendRedirect("./User/register.jsp?message=f");
+        }else if(!email.contains("@")){
+            response.sendRedirect("./User/register.jsp?message=e");
+        }else{
+
+        u.setuName(name);
+        u.setuAddress(address);
+        u.setuEmail(email);
+        u.setuPhone(phone);
+        u.setuPass(pass);
+        u.setuGender(gender);
+        Date pDate = Date.valueOf(date);
         u.setuBirthday(pDate);
         
-        try {
+        
             UserDAO uDAO = new UserDAO();
             uDAO.insertUsers(u);
-        } catch (SQLException ex) {
-            Logger.getLogger(RegisterConroller.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("./webwatch/login.jsp");
         }
-        response.sendRedirect("./webwatch/login.jsp");
+        
+        } catch (SQLException ex) {
+            response.sendRedirect("./User/register.jsp?message=fail");
+        }
+        
+        
     }
 
     /**

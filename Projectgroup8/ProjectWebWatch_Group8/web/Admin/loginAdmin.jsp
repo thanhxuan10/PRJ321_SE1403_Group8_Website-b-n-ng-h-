@@ -133,8 +133,25 @@ margin-left: 4px;
         </style>
     </head>
     <body>
+        
+         <%
+                                try {
+                                    Cookie[] cookies = request.getCookies();
+                                    if (cookies.length >1) {
+                                        for (Cookie cookie : cookies) {
+                                            if (cookie.getName().equals("useradmin")) {
+                                                response.sendRedirect("./Admin/management.jsp");
+                                            }
+                                        }
+                                    } 
+                                    //                out.print("Username: " + user);
+                                } catch (Exception ex) {
+                                   
+                                }
+
+                            %>
        
-            <div class="container">
+        <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
@@ -146,7 +163,7 @@ margin-left: 4px;
 				</div>
 			</div>
 			<div class="card-body">
-				<form action="LoginControllers" method="post">
+				<form action="./LoginControllers" method="post">
                                     
                                     
 					<div class="input-group form-group">

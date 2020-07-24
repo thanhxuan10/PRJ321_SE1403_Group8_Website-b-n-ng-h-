@@ -78,11 +78,11 @@ public class BillController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        // xu li cac chuc nang them sua bill
          try {
             Bills b = new Bills();
         
-            b.setbStatus(request.getParameter("bStatus"));
+            b.setbStatus(Integer.parseInt(request.getParameter("bStatus")));
             b.setbNote(request.getParameter("bNote"));
             b.setbAddress(request.getParameter("bAddress"));
             b.setbName(request.getParameter("bName"));

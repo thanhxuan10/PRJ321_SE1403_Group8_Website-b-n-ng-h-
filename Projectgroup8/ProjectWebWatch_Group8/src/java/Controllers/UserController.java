@@ -78,6 +78,7 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // xu li cac chuc nang them sua ben nguoi dung
            try {
             User u = new User();
             u.setuName(request.getParameter("uName"));
@@ -95,11 +96,12 @@ public class UserController extends HttpServlet {
                 u.setuId(uId);
                 uDAO.updateUsers(u);
             } 
+            
         } catch (SQLException ex) {
             Logger.getLogger(AdminControllers.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        response.sendRedirect("./Admin/user.jsp");
+        response.sendRedirect("./webwatch/confirmation.jsp?uId="+Integer.parseInt(request.getParameter("uId")));
     }
 
     /**
