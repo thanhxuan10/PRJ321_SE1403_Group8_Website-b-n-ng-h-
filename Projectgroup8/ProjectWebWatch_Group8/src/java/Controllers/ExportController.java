@@ -8,6 +8,7 @@ package Controllers;
 import Models.DAO.ProductsDAO;
 import Models.Entity.Products;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import until.ExportExel;
+import until.DownExel;
 
 /**
  *
@@ -93,6 +95,13 @@ public class ExportController extends HttpServlet {
             }
             writer.flush();
             writer.close();
+
+            FileInputStream inputStream = new FileInputStream(filePath);
+            String disposition = "attachment; fileName=Top10Products.csv";
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", disposition);
+            response.setHeader("content-Length", String.valueOf(DownExel.stream(inputStream, response.getOutputStream())));
+
             response.sendRedirect("./Admin/top10.jsp");
 
         } catch (SQLException ex) {

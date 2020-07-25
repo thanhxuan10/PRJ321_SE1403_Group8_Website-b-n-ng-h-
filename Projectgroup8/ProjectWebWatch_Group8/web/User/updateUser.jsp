@@ -138,7 +138,24 @@
     </head>
     <body>
         
-     
+     <%
+            String user = "";
+            try {
+                Cookie[] cookies = request.getCookies();
+                if (cookies.length > 1) {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("useradmin")) {
+                            response.sendRedirect("../Admin");
+                        }
+                    }
+                }
+
+                //                out.print("Username: " + user);
+            } catch (Exception ex) {
+                 response.sendRedirect("../webwatch/register.jsp");
+            }
+
+        %>
                                        
         
         

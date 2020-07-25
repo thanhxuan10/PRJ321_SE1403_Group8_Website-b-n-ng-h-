@@ -103,22 +103,31 @@ public class BuyFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
         if (debug) {
             log("BuyFilter:doFilter()");
         }
         HttpServletRequest re = (HttpServletRequest) request;
         HttpServletResponse rs = (HttpServletResponse) response;
         doBeforeProcessing(request, response);
-        
-         Cookie[] cookies = re.getCookies();
-        if (cookies.length > 1 ) {
-            
-            boolean buy = true;
-        } else {
-            rs.sendRedirect("webwatch/login.jsp");
+
+        Cookie[] cookies = re.getCookies();
+        boolean check = false;
+        if (cookies.length > 1) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals("uId")) {
+                    check = true;
+                    break;
+                }
+            }
         }
-          Throwable problem = null;
+
+        if (!check) {
+
+            rs.sendRedirect("webwatch/login.jsp");
+
+        }
+        Throwable problem = null;
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {

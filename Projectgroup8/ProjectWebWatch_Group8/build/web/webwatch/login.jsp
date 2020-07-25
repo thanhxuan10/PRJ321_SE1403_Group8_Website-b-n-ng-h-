@@ -63,8 +63,8 @@
     <body>
 
         <%
-         String msg = request.getParameter("message");
-         if (msg != null && msg.equals("fail")) { %>
+            String msg = request.getParameter("message");
+            if (msg != null && msg.equals("fail")) { %>
         <!-- Frame Modal Bottom -->
         <div class="modal fade bottom" id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
@@ -113,15 +113,26 @@
                                 <ul>
                                     <li>
                                         <div class="nav-search search-switch">
-                                            <%                                                Cookie[] cookies = request.getCookies();
-                                                if (cookies.length > 1) {
-                                                    String uId = "";
-                                                    for (Cookie c : cookies) {
-                                                        String cName = c.getName();
-                                                        if (cName.equals("uId")) {
-                                                            uId = c.getValue();
-                                                        }
+                                            <%
+                                                Cookie[] cookies = request.getCookies();
+
+                                                boolean check = false;
+
+                                                String uId = "";
+                                                for (Cookie c : cookies) {
+                                                    String cName = c.getName();
+                                                    if (cName.equals("uId")) {
+                                                        uId = c.getValue();
+                                                        check = true;
+                                                        break;
                                                     }
+                                                    
+                                                    if(c.getName().equals("useradmin")) {
+                                                        response.sendRedirect("../Admin");
+                                                    }
+                                                }
+
+                                                if (check) {
                                                     for (Cookie cookie : cookies) {
                                                         if (cookie.getName().equals("user")) {
 
@@ -129,16 +140,10 @@
                                                             out.print("<li><a style='color: black' href='confirmation.jsp?uId=" + Integer.parseInt(uId) + "'>" + cookie.getValue() + "</li></a>");
 
                                                             out.print("<li><a style='color: black;margin-left: 15px' href='../LoginControllers'><i class='fas fa-sign-out-alt'></i></li></a>");
-                                                            out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'></span></a>");
-                                                            out.print("</ul></div></div>");
-                                                        } else if (cookie.getName().equals("useradmin")) {
-                                                            response.sendRedirect("../Admin/management.jsp");
-                                                        } else {
-                                                            out.print("<div class='header-right'><div class='nav-search search-switch'><ul>");
-                                                            out.print("<a href='../webwatch/login.jsp'><span class='flaticon-user'></span></a>");
                                                             out.print("<a href='../User/cart.jsp'><span class='flaticon-shopping-cart'></span></a>");
                                                             out.print("</ul></div></div>");
-                                                        }
+                                                            break;
+                                                        } 
                                                     }
                                                 } else {
                                                     out.print("<div class='header-right'><div class='nav-search search-switch'><ul>");

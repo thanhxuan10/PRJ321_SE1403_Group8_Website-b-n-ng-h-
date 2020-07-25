@@ -113,11 +113,20 @@ public class CommentFillter implements Filter {
         doBeforeProcessing(request, response);
         
          Cookie[] cookies = re.getCookies();
-        if (cookies.length > 1 ) {
-            
-            
-        } else {
+        boolean check = false;
+        if (cookies.length > 1) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals("uId")) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+
+        if (!check) {
+
             rs.sendRedirect("webwatch/login.jsp");
+
         }
         
         Throwable problem = null;

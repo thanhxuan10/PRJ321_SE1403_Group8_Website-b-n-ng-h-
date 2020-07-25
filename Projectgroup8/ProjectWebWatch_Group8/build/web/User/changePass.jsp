@@ -148,9 +148,7 @@
                 } else {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("useradmin")) {
-                            response.sendRedirect("../Admin/management.jsp");
-                        }else{
-                            response.sendRedirect("../webwatch/login.jsp");
+                            response.sendRedirect("../Admin");
                         }
                     }
                 }

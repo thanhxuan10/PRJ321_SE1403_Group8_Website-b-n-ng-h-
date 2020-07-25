@@ -154,7 +154,7 @@
                                                             out.print("<a href='cart.jsp'><span class='flaticon-shopping-cart'></span></a>");
                                                             out.print("</ul></div></div>");
                                                         } else if (cookie.getName().equals("useradmin")) {
-                                                            response.sendRedirect("../Admin/management.jsp");
+                                                            response.sendRedirect("../Admin");
                                                         }
                                                     }
                                                 } else {

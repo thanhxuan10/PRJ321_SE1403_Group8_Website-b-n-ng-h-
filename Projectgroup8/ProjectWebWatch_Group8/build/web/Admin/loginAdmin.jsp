@@ -137,7 +137,7 @@ margin-left: 4px;
          <%
                                 try {
                                     Cookie[] cookies = request.getCookies();
-                                    if (cookies.length >1) {
+                                    if (cookies.length <=1) {
                                         for (Cookie cookie : cookies) {
                                             if (cookie.getName().equals("useradmin")) {
                                                 response.sendRedirect("./Admin/management.jsp");
