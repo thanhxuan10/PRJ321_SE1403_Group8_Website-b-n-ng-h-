@@ -138,10 +138,10 @@
             <!--================ confirmation part start =================-->
             <%
                 UserDAO udao = new UserDAO();
-                int uId = Integer.parseInt(request.getParameter("uId"));
-                User u = udao.getUser(uId);
+                int id = Integer.parseInt(request.getParameter("uId"));
+                User u = udao.getUser(id);
                 BillDAO bDAO = new BillDAO();
-                ResultSet rs = bDAO.getuserBill(uId);
+                ResultSet rs = bDAO.getuserBill(id);
             %>
             <section class="confirmation_part section_padding">
                 <div class="container">

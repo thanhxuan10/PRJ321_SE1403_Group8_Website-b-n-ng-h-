@@ -1,0 +1,14 @@
+SMAP
+comment_jsp.java
+JSP
+*S JSP
+*F
++ 0 comment.jsp
+Admin/comment.jsp
+*L
+5,72:47
+77,21:120
+97,37:141
+134,14:179
+147,77:193
+*E
